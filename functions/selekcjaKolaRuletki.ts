@@ -1,8 +1,8 @@
 import { osobnik } from '../types/osobnik'
 
 const selekcjaKolaRuletki = (populacja: osobnik[]): osobnik[] => {
-	const calkowitePrzystosowanie = populacja.reduce((acc, os) => acc + os?.przystosowanie, 0)
-	const prawdopodobienstwa = populacja.map(os => os?.przystosowanie / calkowitePrzystosowanie)
+	const calkowitePrzystosowanie = populacja.reduce((acc, os) => acc + os.przystosowanie, 0)
+	const prawdopodobienstwa = populacja.map(os => os.przystosowanie / calkowitePrzystosowanie)
 	const skumulowanePrawdopodobienstwa = prawdopodobienstwa.reduce((acc, p, index) => {
 		if (index === 0) {
 			acc.push(p)

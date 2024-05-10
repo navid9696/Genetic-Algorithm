@@ -71,8 +71,7 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 				console.log(`To jest wartość funkcji przed korektą: ${osobnik.przystosowanie}`)
 			})
 
-			const minimalnePrzystosowanie = Math.min(...potomstwo.map(osobnik => osobnik.przystosowanie ?? 0))
-
+			const minimalnePrzystosowanie = Math.min(...potomstwo.map(osobnik => osobnik.przystosowanie))
 			console.log('\n')
 			console.log(`To jest minimalna wartość funkcji: ${minimalnePrzystosowanie}\n`)
 
@@ -87,7 +86,7 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 			populacja = selekcjaKolaRuletki([...potomstwo])
 
 			console.log(
-				`Wybrana populacja: ${potomstwo
+				`Wybrana populacja: ${populacja
 					.map(osobnik => `[${osobnik.przystosowanie}] ${binarnyNaDziesietny(osobnik.chromosom)} ${osobnik.chromosom}`)
 					.join(' | ')}\n`
 			)
@@ -99,12 +98,12 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 		}
 
 		const najlepszy = populacja.reduce((prev, current) =>
-			(prev.przystosowanie ?? 0) > (current.przystosowanie ?? 0) ? prev : current
+			prev.przystosowanie > current.przystosowanie ? prev : current
 		)
 		const najlepszyX = binarnyNaDziesietny(najlepszy.chromosom)
 		const najlepszePrzystosowanie = najlepszy.przystosowanie
 		fs.appendFileSync('wyniki.txt', `${najlepszePrzystosowanie} ${najlepszyX}\n`)
-		console.log(`Najlepszy wynik z ${uruchomienie + 1} uruchomień: [${najlepszePrzystosowanie}] ${najlepszyX}`)
+		console.log(`Najlepszy wynik : [${najlepszePrzystosowanie}] ${najlepszyX}`)
 		console.log(
 			'________________________________________________________________ZAKOŃCZONO________________________________________________________________\n'
 		)
@@ -112,11 +111,11 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 }
 
 algorytmGenetyczny({
-	a: 4,
-	b: 7,
-	c: 2,
-	ile_wyn: 100,
-	lb_pop: 3,
+	a: -1,
+	b: 50,
+	c: 20,
+	ile_wyn: 10,
+	lb_pop: 30,
 	ile_os: 5,
 	pr_krzyz: 0.8,
 	pr_mut: 0.05,
