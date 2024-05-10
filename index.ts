@@ -64,17 +64,19 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 					.join(' | ')}\n`
 			)
 
-			potomstwo.map(osobnik => {
+			potomstwo.forEach(osobnik => {
 				const x = binarnyNaDziesietny(osobnik.chromosom)
 				const przystosowanie = obliczPrzystosowanie(x, a, b, c)
 				osobnik.przystosowanie = przystosowanie
 				console.log(`To jest wartość funkcji przed korektą: ${osobnik.przystosowanie}`)
 			})
+
 			const minimalnePrzystosowanie = Math.min(...potomstwo.map(osobnik => osobnik.przystosowanie ?? 0))
+
 			console.log('\n')
 			console.log(`To jest minimalna wartość funkcji: ${minimalnePrzystosowanie}\n`)
 
-			potomstwo.map(osobnik => {
+			potomstwo.forEach(osobnik => {
 				osobnik.przystosowanie =
 					minimalnePrzystosowanie < 0 ? osobnik.przystosowanie + -minimalnePrzystosowanie + 1 : osobnik.przystosowanie
 
@@ -82,9 +84,10 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 			})
 			console.log('\n')
 
-			populacja = selekcjaKolaRuletki([...populacja, ...potomstwo]).slice(0, ile_os)
+			populacja = selekcjaKolaRuletki([...potomstwo])
+
 			console.log(
-				`Wybrana populacja: ${populacja
+				`Wybrana populacja: ${potomstwo
 					.map(osobnik => `[${osobnik.przystosowanie}] ${binarnyNaDziesietny(osobnik.chromosom)} ${osobnik.chromosom}`)
 					.join(' | ')}\n`
 			)
@@ -101,7 +104,7 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 		const najlepszyX = binarnyNaDziesietny(najlepszy.chromosom)
 		const najlepszePrzystosowanie = najlepszy.przystosowanie
 		fs.appendFileSync('wyniki.txt', `${najlepszePrzystosowanie} ${najlepszyX}\n`)
-		console.log(`Najlepszy wynik z ${uruchomienie + 1} uruchomień: ${najlepszePrzystosowanie} (${najlepszyX})`)
+		console.log(`Najlepszy wynik z ${uruchomienie + 1} uruchomień: [${najlepszePrzystosowanie}] ${najlepszyX}`)
 		console.log(
 			'________________________________________________________________ZAKOŃCZONO________________________________________________________________\n'
 		)
@@ -113,10 +116,10 @@ algorytmGenetyczny({
 	b: 7,
 	c: 2,
 	ile_wyn: 1,
-	lb_pop: 5,
-	ile_os: 6,
+	lb_pop: 3,
+	ile_os: 5,
 	pr_krzyz: 0.8,
 	pr_mut: 0.05,
 })
 
-// node --loader=ts-node/esm index.ts
+// to run => " node --loader=ts-node/esm index.ts "
