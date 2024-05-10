@@ -115,7 +115,7 @@ algorytmGenetyczny({
 	a: 4,
 	b: 7,
 	c: 2,
-	ile_wyn: 1,
+	ile_wyn: 100,
 	lb_pop: 3,
 	ile_os: 5,
 	pr_krzyz: 0.8,
