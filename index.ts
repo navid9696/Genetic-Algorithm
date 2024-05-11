@@ -15,6 +15,7 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 		let populacja: osobnik[] = Array.from({ length: ile_os }, () => ({
 			chromosom: dziesietnyNaBinarny(Math.floor(Math.random() * 256)),
 			przystosowanie: 0,
+			kopiaPrzystosowanie: 0,
 		}))
 		console.log(
 			'________________________________________________________________ROZPOCZĘTO________________________________________________________________\n'
@@ -64,6 +65,7 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 					.join(' | ')}\n`
 			)
 
+			// Poprawki dotyczące przetwarzania populacji
 			potomstwo.forEach(osobnik => {
 				const x = binarnyNaDziesietny(osobnik.chromosom)
 				const przystosowanie = obliczPrzystosowanie(x, a, b, c)
@@ -75,15 +77,17 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 			console.log('\n')
 			console.log(`To jest minimalna wartość funkcji: ${minimalnePrzystosowanie}\n`)
 
-			potomstwo.forEach(osobnik => {
-				osobnik.przystosowanie =
-					minimalnePrzystosowanie < 0 ? osobnik.przystosowanie + -minimalnePrzystosowanie + 1 : osobnik.przystosowanie
+			populacja = potomstwo.map(osobnik => ({
+				...osobnik,
+				przystosowanie:
+					minimalnePrzystosowanie < 0 ? osobnik.przystosowanie + -minimalnePrzystosowanie + 1 : osobnik.przystosowanie,
+			}))
 
-				console.log(`A to jest wartość funkcji po korekcie: ${osobnik.przystosowanie}`)
-			})
 			console.log('\n')
+			console.log(`Populacja po korekcie: ${populacja.map(osobnik => `${osobnik.przystosowanie}`).join(' | ')}\n`)
 
-			populacja = selekcjaKolaRuletki([...potomstwo])
+			
+			populacja = selekcjaKolaRuletki(populacja)
 
 			console.log(
 				`Wybrana populacja: ${populacja
@@ -112,11 +116,11 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 
 algorytmGenetyczny({
 	a: -1,
-	b: 50,
-	c: 20,
-	ile_wyn: 10,
-	lb_pop: 30,
-	ile_os: 5,
+	b: 7,
+	c: 2,
+	ile_wyn: 40,
+	lb_pop: 6,
+	ile_os: 10,
 	pr_krzyz: 0.8,
 	pr_mut: 0.05,
 })
