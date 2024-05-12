@@ -122,8 +122,8 @@ algorytmGenetyczny({
 	b: 7,
 	c: 2,
 	ile_wyn: 50,
-	lb_pop: 6,
-	ile_os: 25,
+	lb_pop: 10,
+	ile_os: 15,
 	pr_krzyz: 0.8,
 	pr_mut: 0.05,
 })
