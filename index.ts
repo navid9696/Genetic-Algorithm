@@ -15,8 +15,10 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 		let populacja: osobnik[] = Array.from({ length: ile_os }, () => ({
 			chromosom: dziesietnyNaBinarny(Math.floor(Math.random() * 256)),
 			przystosowanie: 0,
-			kopiaPrzystosowanie: 0,
 		}))
+
+		let potomstwo: osobnik[] = []
+
 		console.log(
 			'________________________________________________________________ROZPOCZĘTO________________________________________________________________\n'
 		)
@@ -29,8 +31,7 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 			)
 
 			const partnerzy = [...populacja]
-
-			const potomstwo: osobnik[] = []
+			potomstwo = []
 
 			while (partnerzy.length > 1) {
 				const indeks1 = Math.floor(Math.random() * partnerzy.length)
@@ -65,7 +66,6 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 					.join(' | ')}\n`
 			)
 
-			// Poprawki dotyczące przetwarzania populacji
 			potomstwo.forEach(osobnik => {
 				const x = binarnyNaDziesietny(osobnik.chromosom)
 				const przystosowanie = obliczPrzystosowanie(x, a, b, c)
@@ -74,23 +74,26 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 			})
 
 			const minimalnePrzystosowanie = Math.min(...potomstwo.map(osobnik => osobnik.przystosowanie))
+
 			console.log('\n')
 			console.log(`To jest minimalna wartość funkcji: ${minimalnePrzystosowanie}\n`)
 
 			populacja = potomstwo.map(osobnik => ({
 				...osobnik,
 				przystosowanie:
-					minimalnePrzystosowanie < 0 ? osobnik.przystosowanie + -minimalnePrzystosowanie + 1 : osobnik.przystosowanie,
+					minimalnePrzystosowanie < 0 ? osobnik.przystosowanie - minimalnePrzystosowanie + 1 : osobnik.przystosowanie,
 			}))
 
-			console.log('\n')
-			console.log(`Populacja po korekcie: ${populacja.map(osobnik => `${osobnik.przystosowanie}`).join(' | ')}\n`)
+			populacja.forEach(osobnik => {
+				console.log(`To jest wartość funkcji po korekcie: ${osobnik.przystosowanie}`)
+			})
 
-			
+			console.log('\n')
+
 			populacja = selekcjaKolaRuletki(populacja)
 
 			console.log(
-				`Wybrana populacja: ${populacja
+				`Wybrana populacja: ${potomstwo
 					.map(osobnik => `[${osobnik.przystosowanie}] ${binarnyNaDziesietny(osobnik.chromosom)} ${osobnik.chromosom}`)
 					.join(' | ')}\n`
 			)
@@ -101,7 +104,7 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 				)
 		}
 
-		const najlepszy = populacja.reduce((prev, current) =>
+		const najlepszy = potomstwo.reduce((prev, current) =>
 			prev.przystosowanie > current.przystosowanie ? prev : current
 		)
 		const najlepszyX = binarnyNaDziesietny(najlepszy.chromosom)
@@ -115,14 +118,15 @@ const algorytmGenetyczny = ({ a, b, c, ile_wyn, lb_pop, ile_os, pr_krzyz, pr_mut
 }
 
 algorytmGenetyczny({
-	a: -1,
+	a: 4,
 	b: 7,
 	c: 2,
-	ile_wyn: 40,
-	lb_pop: 6,
+	ile_wyn: 50,
+	lb_pop: 15,
 	ile_os: 10,
-	pr_krzyz: 0.8,
-	pr_mut: 0.05,
+	pr_krzyz: 0.7,
+	pr_mut: 0.1,
 })
-
-// to run => " node --loader=ts-node/esm index.ts "
+//  w konsoli najpierw " npm i " aby pobrać wszystkie paczki
+// następnie " node --loader=ts-node/esm index.ts " aby uruchomić
+ 
