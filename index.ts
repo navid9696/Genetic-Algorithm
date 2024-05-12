@@ -122,10 +122,10 @@ algorytmGenetyczny({
 	b: 7,
 	c: 2,
 	ile_wyn: 50,
-	lb_pop: 15,
-	ile_os: 10,
-	pr_krzyz: 0.7,
-	pr_mut: 0.1,
+	lb_pop: 6,
+	ile_os: 25,
+	pr_krzyz: 0.8,
+	pr_mut: 0.05,
 })
 //  w konsoli najpierw " npm i " aby pobrać wszystkie paczki
 // następnie " node --loader=ts-node/esm index.ts " aby uruchomić
